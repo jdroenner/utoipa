@@ -18,7 +18,9 @@ fn main() {
         SWAGGER_UI_DIST_ZIP
     );
 
-    let target_dir = env::var("CARGO_TARGET_DIR")
+    println!("cargo:rerun-if-env-changed=UTOIPA_SWAGGER_DIR");
+    let target_dir = env::var("UTOIPA_SWAGGER_DIR")
+        .or_else(|_| env::var("CARGO_TARGET_DIR"))
         .or_else(|_| env::var("CARGO_BUILD_TARGET_DIR"))
         .or_else(|_| -> Result<String, VarError> {
             let manifest_dir = env::var("CARGO_MANIFEST_DIR")?;
